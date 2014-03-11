@@ -1,0 +1,153 @@
+From uchicago sml tutorial:
+
+Expressions:
+
+Integers: 3, 54, ~3, ~54
+Reals: 3.0, 3.14159, ~3.2E2
+Overloaded arithmetic operators: +, -, *, /, <, <=
+Booleans: true, false, not, orelse, andalso
+Strings: "abs", "hello world\n", x^".sml"
+Lists: [], [1, 2, 3], ["x","str"], 1::2::nil
+Tuples: (), (1, true), (3, "abs", true)
+Records: {a=1, b=true}, {name="fred", age=21}
+conditionals, function applications, let expressions, functions
+
+Declarations:
+
+  value bindings
+    val x = 3
+    val y = x +1
+
+  function bindings
+    fun fact n =
+        if n = 0 then 1
+        else n * fact(n-1)
+
+let expressions: local definitions
+    let decl in expr end
+
+    let val x = 3
+        fun f y = (y, x*y)
+     in f(4+x)
+    end
+
+Function Expressions
+
+val inc = fn x => x + 1
+
+is equivalent to
+
+fun inc x = x + 1
+
+Compound Values
+
+Tuples
+
+Records
+
+wildcard pattern: _
+
+fun iszero(0) = true
+  | iszero(_) = false
+
+val list = [1,2,3]
+val fst::rest = list
+=> fst = 1, rest = [2,3]
+val [x,_,y] = list
+=> x = 1, y = 3
+
+match rule: pat => exp
+match:      pat1 => exp1 | ... | patn => expn
+
+When a match is applied to a value v, we try rules from left to right, looking
+for the first rule whose pattern matches v. We then bind the variables in the
+pattern and evaluate the expression.
+
+case expression:         case exp of match
+function expression:     fn match
+clausal functional defn: fun f pat1 = exp1
+                           | f pat2 = exp2
+                           | ...
+                           | f pat2 = exp2
+
+Pattern matching examples (function definitions)
+
+(* => are used below because of case statement)
+
+fun length l = (case l
+      of [] => 0
+      | [a] => 1
+      | _ :: r => 1 + length r
+      (* end of case *))
+
+fun length [] = 0
+  | length [a] = 1
+  | length (_ :: r) = 1 + length r
+
+fun even 9 = true
+  | even n = odd(n-1)
+
+and odd 0 = false
+  | odd n = even(n-1)
+
+
+Types
+
+basic types:       int, real, string, bool
+    3 : int, true : bool, "abc" : string
+
+function types:    t1 -> t2
+    even: int -> bool
+
+product types:     t1 * t2, unit
+    (3, true): int * bool, (): unit
+
+record types:      {lab1 : t1, ..., labn : tn}
+    car: {make : string, year : int}
+
+type operators:    t list (for example)
+    [1,2,3] : int list
+
+Type abbreviations
+
+type tycon = ty
+
+examples:
+    type point = real * real
+    type line = point * point
+    type car = {make: string, year: int}
+
+type tyvar tycon = ty
+
+examples:
+    type 'a pair = 'a * 'a
+    type point = real pair
+
+Datatypes
+
+    datatype tycon = con_1 of ty_1 | ... | con_n of ty_n
+ 
+    This is a tagged union of variant types ty_1 through ty_n.
+
+    Datatypes can be recursive e.g. datatype intlist = Nil | Cons of int *
+    intlist
+
+    datatype btree = LEAF
+                   | NODE of int * btree * btree
+
+    fun depth LEAF = 0
+      | depth (NODE(_,t1,t2)) =
+          max(depth t1, depth t2) + 1
+
+    fun insert(LEAF,k) = NODE(k, LEAF, LEAF)
+      | insert(NODE(i,t1,t2),k) = 
+          if k > i then NODE(i,t1,insert(t2,k))
+          else if k < i then NODE(i,insert(t1,k),t2)
+          else NODE(i,t1,t2)
+          
+    (* in-order traversal of btrees *)
+    fun inord LEAF = []
+      | inord(NODE(i,t1,t2)) =
+          inord(t1) @ (i :: inord(t2))
+
+    

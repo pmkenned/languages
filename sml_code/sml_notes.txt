@@ -1,0 +1,128 @@
+Data types:
+* int
+* bool
+* string
+* real
+* char
+
+Negative numbers:
+~1.2
+
+Scientific notation:
+1.2E3 = 1200
+7E~2 = 0.07
+
+Variables:
+val foo = 5;
+
+Function Declarations:
+fun double x = 2*x;
+fun double (x : real) = 2.0*x;
+fun double x : real = 2.0*x;
+fun double x = 2.0*x : real;
+
+Escape characters:
+\n \t \" \\
+
+Comments:
+(* *)
+
+Tuples:
+(1,2.0,#"a","paul")	Can have mixed types.
+
+Lists:
+[1,2,3]				Must all be of the same type.
+4::[1,2,3];			Inserts 4 at the head; returns: [4,1,2,3]
+[1,2]@[4,5,6];		Concatenates [1,2] and [4,5,6]; returns: [1,2,4,5,6]
+
+Keywords:
+abstype and andalso as case datatype do
+else end eqtype exception fn fun functor
+handle if in include infix infixr let local
+nonfix of op open orelse raise rec
+sharing sig signature struct structure
+then type val where while with withtype
+
+Characters allowed in symbol names:
+! % & $ # + - * / : < = > ? @ \ ~ ` ^ |
+
+Reserved combinations:
+: | = => -> # :>
+
+div					Used for integer division.
+
+"foo" ^ "bar"				Returns "foobar"
+String.sub("bar",1);		Returns #"a"
+size						Returns the length of a string
+substring(x,a,b);			Returns the substring of x beginning at character offset a and length b.
+#"a"						The character 'a'.
+ord(#"a");					Returns the ASCII code of the character 'a'
+chr(97);					Returns the ASCII character of 97.
+
+real(1)				Returns 1.0
+round(2.3)			Returns 2
+round(~2.3)			Returns 2
+floor(~2.3)			Returns ~3
+ceil(1.2)			Returns 2
+ceil(~1.2)			Returns ~1
+trunc(1.23)			Returns 1
+abs(~2)				Returns 2
+abs(~2.1)			Returns 2.1
+
+Math:
+sqrt sin cos atan exp ln
+
+Logic:
+orelse				Logical or
+andalso				Logical and
+not					Logical negation
+
+Type:
+type float = real
+type vec = real*real;
+
+0-tuple and unit type:
+() is the 0-tuple and has type "unit". Often used with procedural programming
+in ML.
+
+Records: tuples whose components (called fields) have names.
+The records:
+{name = "Jones", age=25, salary=15300} 
+and
+{name = "Jones", salary=15300, age=25} 
+are the same.
+
+... can be used when we do not need to specify all the fields of a record.
+
+type king = {name		: string,
+			 born		: int,
+			 crowned	: int,
+			 died		: int,
+			 quote		: string};
+
+fun nextfib (prev, curr : int) = (curr, prev+curr);
+fun fibpair (n) =
+	if n=1 then (0,1) else nextfib(fibpair(n-1));
+
+fun itfib (n, prev, curr) : int =
+	if n=1 then curr
+	else itfib (n-1, curr, prev+curr);
+
+fun fib (n) = itfib(n,0,1);
+
+explode			Converts a string to a list of chars
+implode			Converts a list of chars to a string
+concat			Joins a list of strings to form a single string
+
+From "Programming in Standard ML"
+
+Page 27:
+Bindings may be combined to form declarations.
+A binding is an atomic declaration.
+
+Wikipedia:
+
+"A functor is a function from structures to structures; that is, a functor
+accepts one or more arguments, which are usually structures of a given
+signature, and produces a structure as its result. Functors are used to
+implement generic data structures and algorithms."
