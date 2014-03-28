@@ -1,5 +1,5 @@
 SRCS = \
        main.cpp
 
-TARGET = foo
+TARGET = LinkedList
 

@@ -10,19 +10,7 @@ class LinkedList {
         LinkedListNode * nextNode;
     };
 
-    LinkedListNode<T> const & traverse(const size_t index) const {
-        LinkedListNode<T> const * node = head;
-
-        size_t i=0;
-        while((i < index) && (node->nextNode != 0)) {
-            node = node->nextNode;
-        }
-
-        return *node;
-    }
-
-    LinkedListNode<T> * head;
-    LinkedListNode<T> * tail;
+    LinkedListNode<T> * head, * tail;
 
     public:
         LinkedList();
@@ -52,14 +40,17 @@ void LinkedList<T>::push_back(T x) {
 
 template <class T>
 const T& LinkedList<T>::operator[](const size_t index) const {
-    const LinkedListNode<T>& node = traverse(index);
-    return node.data;
+    LinkedListNode<T> const * node = head;
+    size_t i=0;
+    while((i < index) && (node->nextNode != 0))
+        node = node->nextNode;
+    return node->data;
 }
 
 template <class T>
 T& LinkedList<T>::operator[](const size_t index) {
     LinkedListNode<T>& node = const_cast<LinkedListNode<T> &>
-        ( static_cast<const LinkedList &>( *this ).traverse(index) );
+        ( static_cast<const LinkedList &>(*this)[index] );
     return node.data;
 }
 
